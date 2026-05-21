@@ -1,0 +1,94 @@
+/**
+ * 全局样式 - 统一配色与可复用组件类
+ * 扩展新页面时可直接使用 .page、.card、.btn-primary 等
+ */
+
+page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #eef1ff 0%, #f5f6fa 40%);
+  color: #1a1a2e;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.page {
+  padding: 32rpx;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+}
+
+.card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 40rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(91, 110, 245, 0.08);
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 16rpx;
+}
+
+.card-desc {
+  font-size: 26rpx;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.btn-primary {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: linear-gradient(135deg, #5b6ef5 0%, #7c8ff8 100%);
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 48rpx;
+  border: none;
+  margin-top: 32rpx;
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+.btn-primary[disabled] {
+  opacity: 0.6;
+}
+
+.result-box {
+  text-align: center;
+  padding: 48rpx 24rpx;
+  min-height: 200rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.result-label {
+  font-size: 26rpx;
+  color: #9ca3af;
+  margin-bottom: 16rpx;
+}
+
+.result-main {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #5b6ef5;
+}
+
+.result-sub {
+  font-size: 28rpx;
+  color: #6b7280;
+  margin-top: 12rpx;
+}
+
+.hint {
+  font-size: 24rpx;
+  color: #9ca3af;
+  text-align: center;
+  margin-top: 24rpx;
+}

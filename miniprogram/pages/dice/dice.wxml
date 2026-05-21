@@ -1,0 +1,58 @@
+<!--
+  骰盅 + 底座同一容器定位，保证落盅时严丝合缝
+-->
+<view class="dice-game">
+  <view class="sky-layer">
+    <view class="star" wx:for="{{stars}}" wx:key="*this" style="top: {{item.top}}; left: {{item.left}}; opacity: {{item.opa}};"></view>
+  </view>
+
+  <view class="game-stage">
+    <view class="cup-unit">
+      <!-- 底座（在下） -->
+      <view class="platform">
+        <view class="platform-disc"></view>
+        <view class="platform-glow"></view>
+      </view>
+
+      <!-- 单骰子（在底盘上） -->
+      <view class="die-box {{cupState === 'open' || cupState === 'lifting' ? 'die-visible' : ''}}">
+        <view class="die die-show-pips dice-{{value}}" wx:if="{{value > 0 && (cupState === 'open' || cupState === 'lifting')}}">
+          <view class="pip"></view>
+          <view class="pip"></view>
+          <view class="pip"></view>
+          <view class="pip"></view>
+          <view class="pip"></view>
+          <view class="pip"></view>
+        </view>
+        <view class="die die-empty" wx:elif="{{cupState === 'open' && !hasPlayed}}">
+          <text class="die-hint">?</text>
+        </view>
+      </view>
+
+      <!-- 骰盅（与底座同一锚点，落盅时贴合） -->
+      <view class="cup-wrap cup-{{cupState}}">
+        <view class="cup-shadow"></view>
+        <view class="cup-body">
+          <view class="cup-rim"></view>
+          <view class="cup-barrel">
+            <view class="cup-oval"></view>
+          </view>
+          <view class="cup-foot"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="result-tip" wx:if="{{statusText}}">
+    <text>{{statusText}}</text>
+  </view>
+
+  <view class="control-dock">
+    <view class="side-btn side-btn-l"></view>
+    <button class="shake-btn" bindtap="onShake" disabled="{{rolling}}">
+      <view class="shake-btn-ring"></view>
+      <text class="shake-label">{{rolling ? '' : '摇'}}</text>
+    </button>
+    <view class="side-btn side-btn-r"></view>
+  </view>
+</view>

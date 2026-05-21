@@ -1,0 +1,355 @@
+/**
+ * 喝酒摇骰子 - 盅与底座合拢定位
+ */
+
+.dice-game {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(180deg, #152a5c 0%, #0b1a3a 45%, #060e22 100%);
+  overflow: hidden;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+}
+
+.sky-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  width: 3rpx;
+  height: 3rpx;
+  background: #fff;
+  border-radius: 50%;
+}
+
+/* ========== 舞台：盅+盘一体 ========== */
+.game-stage {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 520rpx;
+  margin-top: 24rpx;
+}
+
+/* 统一容器：所有元素相对此定位 */
+.cup-unit {
+  position: relative;
+  width: 340rpx;
+  height: 360rpx;
+}
+
+/* 底座 */
+.platform {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 88rpx;
+  z-index: 5;
+}
+
+.platform-disc {
+  width: 340rpx;
+  height: 88rpx;
+  background: linear-gradient(180deg, #3d7fd4 0%, #2563b8 50%, #1a4d96 100%);
+  border-radius: 50%;
+  box-shadow:
+    0 8rpx 0 #153d7a,
+    0 20rpx 60rpx rgba(0, 0, 0, 0.5),
+    inset 0 6rpx 16rpx rgba(255, 255, 255, 0.2);
+}
+
+.platform-glow {
+  position: absolute;
+  width: 380rpx;
+  height: 100rpx;
+  bottom: -16rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(80, 160, 255, 0.35) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* 骰子：坐在底盘中央 */
+.die-box {
+  position: absolute;
+  left: 50%;
+  bottom: 108rpx;
+  transform: translateX(-50%);
+  z-index: 8;
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.die-visible {
+  opacity: 1;
+}
+
+.die {
+  width: 96rpx;
+  height: 96rpx;
+  background: linear-gradient(145deg, #ffffff 0%, #e8e8e8 100%);
+  border-radius: 16rpx;
+  box-shadow: 0 6rpx 0 #c4c4c4, 0 10rpx 24rpx rgba(0, 0, 0, 0.35);
+}
+
+.die-show-pips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  padding: 12rpx;
+  box-sizing: border-box;
+}
+
+.die-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.die-hint {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #bbb;
+}
+
+.pip {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  justify-self: center;
+  align-self: center;
+  display: none;
+}
+
+.dice-1 .pip { background: #e53935; }
+.dice-2 .pip, .dice-3 .pip, .dice-4 .pip, .dice-5 .pip, .dice-6 .pip { background: #1e88e5; }
+
+.dice-1 .pip:nth-child(1) { display: block; grid-area: 2 / 2; }
+.dice-2 .pip:nth-child(1) { display: block; grid-area: 1 / 1; }
+.dice-2 .pip:nth-child(2) { display: block; grid-area: 3 / 3; }
+.dice-3 .pip:nth-child(1) { display: block; grid-area: 1 / 1; }
+.dice-3 .pip:nth-child(2) { display: block; grid-area: 2 / 2; }
+.dice-3 .pip:nth-child(3) { display: block; grid-area: 3 / 3; }
+.dice-4 .pip:nth-child(1) { display: block; grid-area: 1 / 1; }
+.dice-4 .pip:nth-child(2) { display: block; grid-area: 1 / 3; }
+.dice-4 .pip:nth-child(3) { display: block; grid-area: 3 / 1; }
+.dice-4 .pip:nth-child(4) { display: block; grid-area: 3 / 3; }
+.dice-5 .pip:nth-child(1) { display: block; grid-area: 1 / 1; }
+.dice-5 .pip:nth-child(2) { display: block; grid-area: 1 / 3; }
+.dice-5 .pip:nth-child(3) { display: block; grid-area: 2 / 2; }
+.dice-5 .pip:nth-child(4) { display: block; grid-area: 3 / 1; }
+.dice-5 .pip:nth-child(5) { display: block; grid-area: 3 / 3; }
+.dice-6 .pip:nth-child(1) { display: block; grid-area: 1 / 1; }
+.dice-6 .pip:nth-child(2) { display: block; grid-area: 1 / 3; }
+.dice-6 .pip:nth-child(3) { display: block; grid-area: 2 / 1; }
+.dice-6 .pip:nth-child(4) { display: block; grid-area: 2 / 3; }
+.dice-6 .pip:nth-child(5) { display: block; grid-area: 3 / 1; }
+.dice-6 .pip:nth-child(6) { display: block; grid-area: 3 / 3; }
+
+/* ========== 骰盅：底部对齐底盘顶缘 ========== */
+.cup-wrap {
+  position: absolute;
+  left: 50%;
+  width: 300rpx;
+  margin-left: -150rpx;
+  /* 盅脚底边 = 底盘顶边（88rpx），落盅时 translateY(0) */
+  bottom: 88rpx;
+  z-index: 20;
+  transform-origin: center bottom;
+  will-change: transform;
+  transition: transform 0.62s cubic-bezier(0.33, 1.1, 0.52, 1);
+}
+
+/* 开盅：仅上提一小段，露出骰子即可 */
+.cup-open,
+.cup-lifting {
+  transform: translate3d(0, -118rpx, 0);
+}
+
+/* 落盅 / 摇晃：与底盘严丝合缝，Y 偏移为 0 */
+.cup-closed,
+.cup-shake {
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.62s cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+/* 摇晃：只在合拢位置左右晃，不改变纵向距离 */
+.cup-shake {
+  animation: cup-wiggle 0.18s ease-in-out infinite;
+}
+
+@keyframes cup-wiggle {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  20% { transform: translate3d(-12rpx, 0, 0) rotate(-4deg); }
+  40% { transform: translate3d(10rpx, 0, 0) rotate(3deg); }
+  60% { transform: translate3d(-8rpx, 0, 0) rotate(-2deg); }
+  80% { transform: translate3d(6rpx, 0, 0) rotate(2deg); }
+  100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+}
+
+.cup-shadow {
+  position: absolute;
+  bottom: -20rpx;
+  left: 50%;
+  width: 260rpx;
+  height: 36rpx;
+  margin-left: -130rpx;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.45) 0%, transparent 70%);
+  transition: opacity 0.4s ease;
+}
+
+.cup-open .cup-shadow,
+.cup-lifting .cup-shadow {
+  opacity: 0.2;
+}
+
+.cup-closed .cup-shadow,
+.cup-shake .cup-shadow {
+  opacity: 0.5;
+}
+
+.cup-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cup-rim {
+  width: 280rpx;
+  height: 28rpx;
+  background: linear-gradient(180deg, #8ec8f5 0%, #5a9fd8 100%);
+  border-radius: 50%;
+  box-shadow: inset 0 4rpx 8rpx rgba(255, 255, 255, 0.45);
+}
+
+.cup-barrel {
+  width: 260rpx;
+  height: 200rpx;
+  margin-top: -10rpx;
+  background: linear-gradient(90deg, #2d5a9e 0%, #4a8fd4 25%, #5aa0e0 50%, #4a8fd4 75%, #2d5a9e 100%);
+  border-radius: 8rpx 8rpx 18rpx 18rpx;
+  position: relative;
+  box-shadow:
+    inset -10rpx 0 20rpx rgba(0, 0, 0, 0.15),
+    inset 10rpx 0 20rpx rgba(255, 255, 255, 0.1);
+}
+
+.cup-oval {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 96rpx;
+  height: 60rpx;
+  margin: -30rpx 0 0 -48rpx;
+  background: linear-gradient(180deg, #e8d4b8 0%, #c9b896 100%);
+  border-radius: 50%;
+}
+
+/* 盅底法兰：与底盘同宽，视觉上连成一体 */
+.cup-foot {
+  width: 340rpx;
+  height: 24rpx;
+  margin-top: -2rpx;
+  margin-left: -20rpx;
+  background: linear-gradient(180deg, #4a8fd4 0%, #2563b8 60%, #1a4d96 100%);
+  border-radius: 0 0 20rpx 20rpx;
+  box-shadow: 0 4rpx 0 #153d7a;
+}
+
+.result-tip {
+  position: relative;
+  z-index: 3;
+  padding: 8rpx 0 12rpx;
+}
+
+.result-tip text {
+  font-size: 32rpx;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 4rpx;
+}
+
+.control-dock {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48rpx;
+  padding: 12rpx 0 48rpx;
+}
+
+.side-btn {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  border: 2rpx solid rgba(255, 255, 255, 0.15);
+}
+
+.side-btn-l::after,
+.side-btn-r::after {
+  content: '';
+  display: block;
+  width: 36rpx;
+  height: 36rpx;
+  margin: 26rpx auto;
+  border: 3rpx solid rgba(255, 255, 255, 0.5);
+  border-radius: 8rpx;
+}
+
+.shake-btn {
+  position: relative;
+  width: 196rpx;
+  height: 196rpx;
+  padding: 0;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shake-btn::after {
+  border: none;
+}
+
+.shake-btn-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #ff8a80 0%, #e53935 45%, #b71c1c 100%);
+  border: 14rpx solid #cfd8dc;
+  box-shadow:
+    0 10rpx 0 #6d4c41,
+    0 18rpx 50rpx rgba(0, 0, 0, 0.55),
+    inset 0 8rpx 20rpx rgba(255, 255, 255, 0.35);
+  transition: transform 0.15s ease;
+}
+
+.shake-label {
+  position: relative;
+  z-index: 1;
+  font-size: 92rpx;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.shake-btn[disabled] .shake-btn-ring {
+  opacity: 0.75;
+}
+
+.shake-btn:active:not([disabled]) .shake-btn-ring {
+  transform: translateY(8rpx) scale(0.97);
+}

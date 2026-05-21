@@ -1,0 +1,81 @@
+<view class="rps-game">
+  <!-- 背景装饰 -->
+  <view class="rps-bg">
+    <view class="bg-glow bg-glow-1"></view>
+    <view class="bg-glow bg-glow-2"></view>
+  </view>
+
+  <!-- 顶部状态 -->
+  <view class="top-bar">
+    <text class="top-badge">RPS Battle</text>
+    <text class="top-status">{{statusText}}</text>
+  </view>
+
+  <!-- 出拳选择 -->
+  <view class="section">
+    <text class="section-title">你的出拳</text>
+    <view class="choice-row">
+      <button
+        class="choice-btn {{item.themeClass}} {{userChoice.id === item.id ? 'choice-btn-active' : ''}}"
+        wx:for="{{choices}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onSelectChoice"
+        disabled="{{playing}}"
+      >
+        <view class="choice-icon-wrap">
+          <text class="choice-emoji">{{item.emoji}}</text>
+        </view>
+        <text class="choice-name">{{item.name}}</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 对战擂台 -->
+  <view class="arena {{hasPlayed ? 'arena-show' : ''}}">
+    <view class="arena-inner" wx:if="{{hasPlayed}}">
+      <view class="fighter fighter-user">
+        <text class="fighter-tag">你</text>
+        <view class="fighter-avatar user-avatar">
+          <text class="fighter-emoji">{{userChoice.emoji}}</text>
+        </view>
+        <text class="fighter-name">{{userChoice.name}}</text>
+      </view>
+
+      <view class="vs-badge">
+        <text class="vs-text">VS</text>
+      </view>
+
+      <view class="fighter fighter-opp">
+        <text class="fighter-tag">对手</text>
+        <view class="fighter-avatar opp-avatar {{playing ? 'opp-pulse' : ''}}">
+          <text class="fighter-emoji" wx:if="{{opponent}}">{{opponent.emoji}}</text>
+          <text class="fighter-emoji fighter-unknown" wx:else>❓</text>
+        </view>
+        <text class="fighter-name" wx:if="{{opponent}}">{{opponent.name}}</text>
+        <text class="fighter-name fighter-wait" wx:else>出拳中</text>
+      </view>
+    </view>
+
+    <view class="arena-empty" wx:else>
+      <text class="arena-empty-icon">✊✌️✋</text>
+      <text class="arena-empty-text">选好手势，开始对战</text>
+    </view>
+  </view>
+
+  <!-- 胜负结果 -->
+  <view class="result-panel {{resultClass}}" wx:if="{{hasPlayed}}">
+    <text class="result-icon">{{resultIcon}}</text>
+    <text class="result-title">{{resultText}}</text>
+    <text class="result-sub">{{resultSub}}</text>
+  </view>
+
+  <!-- 再来一局 -->
+  <button
+    class="btn-reset"
+    wx:if="{{hasPlayed && !playing}}"
+    bindtap="onReset"
+  >
+    再来一局
+  </button>
+</view>

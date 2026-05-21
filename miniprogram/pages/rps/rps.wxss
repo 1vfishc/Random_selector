@@ -1,0 +1,396 @@
+/**
+ * 石头剪刀布 - 深色竞技风样式
+ */
+
+.rps-game {
+  min-height: 100vh;
+  padding: 24rpx 32rpx;
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  background: linear-gradient(165deg, #1a1035 0%, #2d1b4e 40%, #1a1035 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 背景光晕 */
+.rps-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bg-glow {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.bg-glow-1 {
+  width: 400rpx;
+  height: 400rpx;
+  top: -100rpx;
+  right: -120rpx;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.35) 0%, transparent 70%);
+}
+
+.bg-glow-2 {
+  width: 360rpx;
+  height: 360rpx;
+  bottom: 200rpx;
+  left: -140rpx;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+}
+
+/* 顶部 */
+.top-bar {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 16rpx 0 32rpx;
+}
+
+.top-badge {
+  display: inline-block;
+  font-size: 22rpx;
+  font-weight: 600;
+  letter-spacing: 3rpx;
+  color: #f9a8d4;
+  background: rgba(236, 72, 153, 0.15);
+  padding: 8rpx 24rpx;
+  border-radius: 100rpx;
+  border: 1rpx solid rgba(236, 72, 153, 0.3);
+}
+
+.top-status {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 16rpx;
+}
+
+/* 分区 */
+.section {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 32rpx;
+}
+
+.section-title {
+  display: block;
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 20rpx;
+  padding-left: 8rpx;
+}
+
+/* 出拳按钮 */
+.choice-row {
+  display: flex;
+  gap: 20rpx;
+}
+
+.choice-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 0 24rpx;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 24rpx;
+  border: 3rpx solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.choice-btn::after {
+  border: none;
+}
+
+.choice-icon-wrap {
+  width: 100%;
+  padding: 28rpx 0 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.choice-emoji {
+  font-size: 64rpx;
+  line-height: 1.2;
+}
+
+.choice-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 各手势主题色 */
+.choice-rock .choice-icon-wrap {
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.35) 0%, transparent 100%);
+}
+
+.choice-scissors .choice-icon-wrap {
+  background: linear-gradient(180deg, rgba(236, 72, 153, 0.35) 0%, transparent 100%);
+}
+
+.choice-paper .choice-icon-wrap {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.35) 0%, transparent 100%);
+}
+
+.choice-rock.choice-btn-active {
+  border-color: #818cf8;
+  box-shadow: 0 0 32rpx rgba(99, 102, 241, 0.4);
+}
+
+.choice-scissors.choice-btn-active {
+  border-color: #f472b6;
+  box-shadow: 0 0 32rpx rgba(236, 72, 153, 0.4);
+}
+
+.choice-paper.choice-btn-active {
+  border-color: #34d399;
+  box-shadow: 0 0 32rpx rgba(16, 185, 129, 0.4);
+}
+
+.choice-btn-active {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.02);
+}
+
+.choice-btn[disabled] {
+  opacity: 0.65;
+}
+
+.choice-btn:active:not([disabled]) {
+  transform: scale(0.96);
+}
+
+/* 对战擂台 */
+.arena {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 32rpx;
+  border: 2rpx solid rgba(255, 255, 255, 0.08);
+  min-height: 280rpx;
+  margin-bottom: 28rpx;
+  overflow: hidden;
+}
+
+.arena-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40rpx 24rpx;
+}
+
+.arena-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 280rpx;
+  padding: 40rpx;
+}
+
+.arena-empty-icon {
+  font-size: 48rpx;
+  letter-spacing: 16rpx;
+  opacity: 0.6;
+}
+
+.arena-empty-text {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 20rpx;
+}
+
+/* 对战选手 */
+.fighter {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fighter-tag {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 16rpx;
+  padding: 4rpx 20rpx;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 100rpx;
+}
+
+.fighter-avatar {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12rpx 40rpx rgba(0, 0, 0, 0.3);
+}
+
+.user-avatar {
+  background: linear-gradient(145deg, #6366f1 0%, #4f46e5 100%);
+  border: 4rpx solid rgba(255, 255, 255, 0.2);
+}
+
+.opp-avatar {
+  background: linear-gradient(145deg, #ec4899 0%, #db2777 100%);
+  border: 4rpx solid rgba(255, 255, 255, 0.2);
+}
+
+.fighter-emoji {
+  font-size: 72rpx;
+  line-height: 1.2;
+}
+
+.fighter-unknown {
+  opacity: 0.7;
+}
+
+.fighter-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #fff;
+  margin-top: 16rpx;
+}
+
+.fighter-wait {
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 400;
+}
+
+/* 对手出拳脉冲动画 */
+.opp-pulse {
+  animation: opp-pulse 0.15s ease-in-out infinite;
+}
+
+@keyframes opp-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+/* VS 徽章 */
+.vs-badge {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin: 0 8rpx;
+  box-shadow: 0 8rpx 24rpx rgba(245, 158, 11, 0.45);
+}
+
+.vs-text {
+  font-size: 26rpx;
+  font-weight: 800;
+  color: #1a1035;
+}
+
+/* 结果面板 */
+.result-panel {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 36rpx 32rpx;
+  border-radius: 24rpx;
+  margin-bottom: 28rpx;
+  border: 2rpx solid transparent;
+}
+
+.result-icon {
+  display: block;
+  font-size: 56rpx;
+  margin-bottom: 12rpx;
+}
+
+.result-title {
+  display: block;
+  font-size: 44rpx;
+  font-weight: 800;
+  letter-spacing: 4rpx;
+}
+
+.result-sub {
+  display: block;
+  font-size: 26rpx;
+  margin-top: 8rpx;
+  opacity: 0.85;
+}
+
+.result-win {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%);
+  border-color: rgba(52, 211, 153, 0.4);
+}
+.result-win .result-title {
+  color: #6ee7b7;
+}
+.result-win .result-sub {
+  color: #a7f3d0;
+}
+
+.result-lose {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.25) 0%, rgba(220, 38, 38, 0.15) 100%);
+  border-color: rgba(248, 113, 113, 0.4);
+}
+.result-lose .result-title {
+  color: #fca5a5;
+}
+.result-lose .result-sub {
+  color: #fecaca;
+}
+
+.result-draw {
+  background: linear-gradient(135deg, rgba(148, 163, 184, 0.2) 0%, rgba(100, 116, 139, 0.12) 100%);
+  border-color: rgba(203, 213, 225, 0.3);
+}
+.result-draw .result-title {
+  color: #e2e8f0;
+}
+.result-draw .result-sub {
+  color: #cbd5e1;
+}
+
+.result-pending {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(139, 92, 246, 0.15) 100%);
+  border-color: rgba(165, 180, 252, 0.35);
+}
+.result-pending .result-title {
+  color: #c7d2fe;
+  font-size: 36rpx;
+}
+.result-pending .result-sub {
+  color: #a5b4fc;
+}
+
+/* 重置按钮 */
+.btn-reset {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 48rpx;
+  border: none;
+  box-shadow: 0 12rpx 36rpx rgba(236, 72, 153, 0.4);
+}
+
+.btn-reset::after {
+  border: none;
+}
+
+.btn-reset:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}

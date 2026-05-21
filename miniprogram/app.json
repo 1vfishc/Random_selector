@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/dice/dice",
+    "pages/rps/rps",
+    "pages/picker/picker"
+  ],
+  "window": {
+    "navigationBarTitleText": "随机决定器",
+    "navigationBarBackgroundColor": "#5B6EF5",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F0F2F8",
+    "backgroundTextStyle": "dark"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

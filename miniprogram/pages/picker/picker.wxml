@@ -1,0 +1,61 @@
+<view class="picker-game">
+  <!-- 背景装饰 -->
+  <view class="picker-bg">
+    <view class="bg-glow bg-glow-1"></view>
+    <view class="bg-glow bg-glow-2"></view>
+  </view>
+
+  <!-- 顶部状态 -->
+  <view class="top-bar">
+    <text class="top-badge">Lucky Pick</text>
+    <text class="top-status">{{statusText}}</text>
+  </view>
+
+  <!-- 输入区 -->
+  <view class="section">
+    <text class="section-title">输入选项（逗号分隔）</text>
+    <view class="input-card">
+      <textarea
+        class="option-input"
+        placeholder="例如：火锅,烧烤,麻辣烫,披萨,寿司"
+        placeholder-class="input-placeholder"
+        value="{{inputText}}"
+        bindinput="onInput"
+        maxlength="500"
+        show-confirm-bar="{{false}}"
+      />
+      <view class="input-footer" wx:if="{{options.length > 0}}">
+        <text class="option-count">✓ {{options.length}} 个选项待抽取</text>
+      </view>
+      <text class="error-hint" wx:if="{{errorMsg}}">{{errorMsg}}</text>
+    </view>
+
+    <!-- 选项预览标签 -->
+    <view class="tags-wrap" wx:if="{{options.length > 0 && options.length <= 12}}">
+      <text class="option-tag" wx:for="{{options}}" wx:key="*this">{{item}}</text>
+    </view>
+    <text class="tags-more" wx:if="{{options.length > 12}}">共 {{options.length}} 项，抽取时随机命中其一</text>
+  </view>
+
+  <!-- 抽取按钮 -->
+  <button class="btn-pick" bindtap="onPick" disabled="{{picking}}">
+    <text class="btn-pick-icon">🎯</text>
+    <text>{{picking ? '抽取中…' : '帮我选一个'}}</text>
+  </button>
+
+  <!-- 结果展示 -->
+  <view class="result-arena {{hasPicked ? 'result-show' : ''}}">
+    <view class="result-panel {{picking ? 'result-spinning' : ''}}" wx:if="{{hasPicked}}">
+      <text class="result-label">为你选中</text>
+      <text class="result-value">{{selected}}</text>
+      <text class="result-sub" wx:if="{{resultSub}}">{{resultSub}}</text>
+    </view>
+    <view class="result-empty" wx:else>
+      <text class="result-empty-icon">🎲</text>
+      <text class="result-empty-text">输入选项后点击抽取</text>
+    </view>
+  </view>
+
+  <!-- 清空 -->
+  <button class="btn-reset" wx:if="{{inputText}}" bindtap="onClear">清空重来</button>
+</view>

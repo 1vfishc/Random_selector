@@ -1,0 +1,285 @@
+/**
+ * 随机选择 - 深色翠绿主题（与骰子/猜拳页风格统一）
+ */
+
+.picker-game {
+  min-height: 100vh;
+  padding: 24rpx 32rpx;
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  background: linear-gradient(165deg, #0a1f1a 0%, #0f2d24 40%, #0a1f1a 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 背景光晕 */
+.picker-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bg-glow {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.bg-glow-1 {
+  width: 420rpx;
+  height: 420rpx;
+  top: -120rpx;
+  left: -100rpx;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.35) 0%, transparent 70%);
+}
+
+.bg-glow-2 {
+  width: 380rpx;
+  height: 380rpx;
+  bottom: 180rpx;
+  right: -140rpx;
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.25) 0%, transparent 70%);
+}
+
+/* 顶部 */
+.top-bar {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 16rpx 0 36rpx;
+}
+
+.top-badge {
+  display: inline-block;
+  font-size: 22rpx;
+  font-weight: 600;
+  letter-spacing: 3rpx;
+  color: #6ee7b7;
+  background: rgba(16, 185, 129, 0.15);
+  padding: 8rpx 24rpx;
+  border-radius: 100rpx;
+  border: 1rpx solid rgba(52, 211, 153, 0.35);
+}
+
+.top-status {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 16rpx;
+}
+
+/* 分区 */
+.section {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 28rpx;
+}
+
+.section-title {
+  display: block;
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 16rpx;
+  padding-left: 8rpx;
+}
+
+/* 输入卡片 */
+.input-card {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 24rpx;
+  border: 2rpx solid rgba(255, 255, 255, 0.1);
+  padding: 24rpx;
+  overflow: hidden;
+}
+
+.option-input {
+  width: 100%;
+  min-height: 160rpx;
+  font-size: 30rpx;
+  line-height: 1.65;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.input-placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.input-footer {
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid rgba(255, 255, 255, 0.08);
+}
+
+.option-count {
+  font-size: 24rpx;
+  color: #6ee7b7;
+  font-weight: 500;
+}
+
+.error-hint {
+  display: block;
+  font-size: 24rpx;
+  color: #fca5a5;
+  margin-top: 16rpx;
+}
+
+/* 选项标签预览 */
+.tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 20rpx;
+}
+
+.option-tag {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(16, 185, 129, 0.2);
+  border: 1rpx solid rgba(52, 211, 153, 0.35);
+  padding: 8rpx 20rpx;
+  border-radius: 100rpx;
+  max-width: 200rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tags-more {
+  display: block;
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 16rpx;
+}
+
+/* 抽取按钮 */
+.btn-pick {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 104rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #fff;
+  font-size: 34rpx;
+  font-weight: 700;
+  border-radius: 52rpx;
+  border: none;
+  margin-bottom: 32rpx;
+  box-shadow: 0 12rpx 40rpx rgba(16, 185, 129, 0.45);
+}
+
+.btn-pick::after {
+  border: none;
+}
+
+.btn-pick[disabled] {
+  opacity: 0.7;
+}
+
+.btn-pick:active:not([disabled]) {
+  transform: scale(0.98);
+}
+
+.btn-pick-icon {
+  font-size: 36rpx;
+}
+
+/* 结果擂台 */
+.result-arena {
+  position: relative;
+  z-index: 1;
+  min-height: 240rpx;
+  margin-bottom: 28rpx;
+}
+
+.result-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 240rpx;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 28rpx;
+  border: 2rpx dashed rgba(255, 255, 255, 0.12);
+}
+
+.result-empty-icon {
+  font-size: 64rpx;
+  opacity: 0.5;
+}
+
+.result-empty-text {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 16rpx;
+}
+
+/* 结果面板 */
+.result-panel {
+  text-align: center;
+  padding: 48rpx 36rpx;
+  border-radius: 28rpx;
+  background: linear-gradient(145deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.2) 100%);
+  border: 2rpx solid rgba(52, 211, 153, 0.45);
+  box-shadow: 0 16rpx 48rpx rgba(16, 185, 129, 0.25);
+}
+
+.result-spinning {
+  animation: result-pulse 0.12s ease-in-out infinite;
+}
+
+@keyframes result-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.92; transform: scale(0.99); }
+}
+
+.result-label {
+  display: block;
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 4rpx;
+  margin-bottom: 20rpx;
+}
+
+.result-value {
+  display: block;
+  font-size: 52rpx;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.35;
+  word-break: break-all;
+  text-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.2);
+}
+
+.result-sub {
+  display: block;
+  font-size: 26rpx;
+  color: #a7f3d0;
+  margin-top: 16rpx;
+}
+
+/* 清空按钮 */
+.btn-reset {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 30rpx;
+  border-radius: 44rpx;
+  border: 2rpx solid rgba(255, 255, 255, 0.15);
+}
+
+.btn-reset::after {
+  border: none;
+}
+
+.btn-reset:active {
+  background: rgba(255, 255, 255, 0.12);
+}
